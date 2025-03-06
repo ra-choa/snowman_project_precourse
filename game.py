@@ -20,8 +20,24 @@ def snowman(snowman_word):
     If the player wins and, 
     'Sorry, you lose! The word was {snowman_word}' if the player loses
     """
-    pass
-
+    wrong_guesses_list = []
+    correct_letter_guess_statuses = build_letter_status_dict(snowman_word)
+    
+    while True:
+        letter_typed = get_letter_from_user(correct_letter_guess_statuses, wrong_guesses_list)
+        if letter_typed in snowman_word:
+            correct_letter_guess_statuses[letter_typed] = True
+            print_word_progress_string(snowman_word, correct_letter_guess_statuses)
+            if is_word_guessed(snowman_word, correct_letter_guess_statuses) is True:
+            # if snowman_word == generate_word_progress_string(snowman_word, correct_letter_guess_statuses):
+                print("Congratulations, you win!")
+                return
+        else:
+            print_snowman_graphic(len(wrong_guesses_list))
+            wrong_guesses_list.append(letter_typed)
+            if len(wrong_guesses_list) >= SNOWMAN_MAX_WRONG_GUESSES:
+                print(f"Sorry, you lose! The word was {snowman_word}")
+                return
 
 def print_snowman_graphic(wrong_guesses_count):
     """This function prints out the appropriate snowman image 
@@ -33,7 +49,7 @@ def print_snowman_graphic(wrong_guesses_count):
 
 
 def get_letter_from_user(correct_letter_guess_statuses, wrong_guesses_list):
-    """This function takes the snowman_word_dict and the list of characters 
+    """This function takes the correct_letter_guess_statuses and the list of characters 
     that have been guessed incorrectly (wrong_guesses_list) as input.
     It asks for input from the user of a single character until 
     a valid character is provided and then returns this character.
@@ -73,7 +89,7 @@ def build_letter_status_dict(snowman_word):
 
 def print_word_progress_string(snowman_word, correct_letter_guess_statuses):
     """
-    This function takes the snowman_word and snowman_word_dict as input.
+    This function takes the snowman_word and correct_letter_guess_statuses as input.
     It calls another function to generate a string representation of the  
     user's progress towards guessing snowman_word and prints this string.
     """
@@ -84,7 +100,7 @@ def print_word_progress_string(snowman_word, correct_letter_guess_statuses):
 
 def generate_word_progress_string(snowman_word, correct_letter_guess_statuses):
     """
-    This function takes the snowman_word and snowman_word_dict as input.
+    This function takes the snowman_word and correct_letter_guess_statuses as input.
     It creates and returns an output string that shows the correct letter 
     guess placements as well as the placements for the letters yet to be 
     guessed.
@@ -109,7 +125,7 @@ def generate_word_progress_string(snowman_word, correct_letter_guess_statuses):
 
 def is_word_guessed(snowman_word, correct_letter_guess_statuses):
     """
-    This function takes the snowman_word and snowman_word_dict as input.
+    This function takes the snowman_word and correct_letter_guess_statuses as input.
     It returns True if all the letters of the word have been guessed, and False otherwise.
     """
 
