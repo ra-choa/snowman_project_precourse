@@ -23,18 +23,19 @@ def snowman(snowman_word):
     wrong_guesses_list = []
     correct_letter_guess_statuses = build_letter_status_dict(snowman_word)
     
-    while True:
+    while len(wrong_guesses_list) <= SNOWMAN_MAX_WRONG_GUESSES:
         letter_typed = get_letter_from_user(correct_letter_guess_statuses, wrong_guesses_list)
         if letter_typed in snowman_word:
             correct_letter_guess_statuses[letter_typed] = True
             print_word_progress_string(snowman_word, correct_letter_guess_statuses)
+            
             if is_word_guessed(snowman_word, correct_letter_guess_statuses) is True:
-            # if snowman_word == generate_word_progress_string(snowman_word, correct_letter_guess_statuses):
                 print("Congratulations, you win!")
                 return
         else:
-            print_snowman_graphic(len(wrong_guesses_list))
             wrong_guesses_list.append(letter_typed)
+            print_snowman_graphic(len(wrong_guesses_list))
+            print(f"wrong letters: {wrong_guesses_list}")
             if len(wrong_guesses_list) >= SNOWMAN_MAX_WRONG_GUESSES:
                 print(f"Sorry, you lose! The word was {snowman_word}")
                 return
